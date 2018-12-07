@@ -4,13 +4,13 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/edit_word"
+        android:id="@+id/edit_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
         android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_word"
+        android:hint="@string/hint_new_note"
         android:inputType="textAutoComplete"
         android:padding="@dimen/small_padding"
         android:textSize="18sp" />
