@@ -39,4 +39,23 @@ public class NoteRepository {
             return null;
         }
     }
+
+    void deleteAll(){
+        new DeleteAllAsyncTask(mNoteDao).execute();
+    }
+
+    private static class DeleteAllAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private NoteDao mAsyncTaskDao;
+
+        DeleteAllAsyncTask(NoteDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            mAsyncTaskDao.deleteAll();
+            return null;
+        }
+    }
 }

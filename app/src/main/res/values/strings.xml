@@ -2,5 +2,6 @@
     <string name="app_name">Notebook</string>
     <string name="hint_new_note">Новая запись</string>
     <string name="button_save">Save</string>
-    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="empty_not_saved">Пустая запись не сохранена!</string>
+    <string name="action_delete">Удаление</string>
 </resources>
