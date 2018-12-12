@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">Notebook</string>
     <string name="hint_new_note">Новая запись</string>
-    <string name="button_save">Save</string>
+    <string name="button_save">Сохранить</string>
     <string name="empty_not_saved">Пустая запись не сохранена!</string>
     <string name="action_delete">Удаление</string>
+    <string name="dialog_delete_all_notes">УДАЛИТЬ ВСЕ ЗАПИСИ?</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+    <string name="toast_delete_notes">Список удалён.</string>
 </resources>

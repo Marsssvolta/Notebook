@@ -3,10 +3,12 @@ package com.marsssvolta.notebook;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,10 +43,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                mNoteViewModel.deleteAll();
+                showDialog();
             default:
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    // Диалог очистки списка
+    public void showDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_delete_all_notes)
+                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
+                    mNoteViewModel.deleteAll();
+                    Toast.makeText(this, R.string.toast_delete_notes, Toast.LENGTH_SHORT)
+                            .show();
+                }).setNegativeButton(R.string.cancel, null).show();
     }
 }
