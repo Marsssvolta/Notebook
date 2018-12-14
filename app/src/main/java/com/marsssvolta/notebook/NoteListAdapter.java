@@ -22,10 +22,12 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     class NoteViewHolder extends RecyclerView.ViewHolder {
         private final TextView noteItemView;
+        private final TextView noteId;
 
         private NoteViewHolder(View itemView) {
             super(itemView);
             noteItemView = itemView.findViewById(R.id.textTitle);
+            noteId = itemView.findViewById(R.id.noteId);
         }
     }
 
@@ -40,6 +42,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note current = mNotes.get(position);
         holder.noteItemView.setText(current.getNote());
+        holder.noteId.setText(current.getTextId());
     }
 
     void setNotes(List<Note> notes) {

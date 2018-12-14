@@ -8,7 +8,22 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "note_table")
 public class Note {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    public String getTextId() {
+        String textId = String.valueOf(id);
+        return textId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @NonNull
     @ColumnInfo(name = "note")
     private String mNote;
