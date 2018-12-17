@@ -11,11 +11,14 @@ import java.util.List;
 public interface NoteDao {
 
     @Query("SELECT * from note_table")
-    LiveData<List<Note>> getAlphabetizedNotes();
+    LiveData<List<Note>> getNotes();
 
     @Insert
     void insert(Note note);
 
     @Query("DELETE FROM note_table")
     void deleteAll();
+
+    @Query("DELETE FROM note_table WHERE id =:noteId")
+    void deleteNote(int noteId);
 }

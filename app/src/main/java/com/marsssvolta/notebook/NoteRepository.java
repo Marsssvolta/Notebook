@@ -14,7 +14,7 @@ public class NoteRepository {
     NoteRepository(Application application) {
         NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
         mNoteDao = db.noteDao();
-        mAllNotes = mNoteDao.getAlphabetizedNotes();
+        mAllNotes = mNoteDao.getNotes();
     }
 
     LiveData<List<Note>> getAllNotes() {
@@ -55,6 +55,25 @@ public class NoteRepository {
         @Override
         protected Void doInBackground(final Void... params) {
             mAsyncTaskDao.deleteAll();
+            return null;
+        }
+    }
+
+    void deleteNote(int id){
+        new deleteNoteAsyncTask(mNoteDao).execute(id);
+    }
+
+    private static class deleteNoteAsyncTask extends AsyncTask<Integer, Void, Void> {
+
+        private NoteDao mAsyncTaskDao;
+
+        deleteNoteAsyncTask(NoteDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            mAsyncTaskDao.deleteNote(params[0]);
             return null;
         }
     }
