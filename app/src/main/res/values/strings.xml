@@ -5,8 +5,10 @@
     <string name="empty_not_saved">Пустая запись не сохранена!</string>
     <string name="action_delete">Удаление</string>
     <string name="dialog_delete_all_notes">УДАЛИТЬ ВСЕ ЗАПИСИ?</string>
+    <string name="dialog_delete_one_note">УДАЛИТЬ ЗАПИСЬ?</string>
     <string name="delete">Удалить</string>
     <string name="cancel">Отмена</string>
     <string name="toast_delete_notes">Список удалён.</string>
+    <string name="toast_delete_note">Запись удалена.</string>
     <string name="delete_note">УДАЛИТЬ</string>
 </resources>

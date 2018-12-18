@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,15 +21,17 @@ import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
 public class NotebookListFragment extends Fragment {
 
-    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
 
     private RecyclerView mRecyclerView;
     private NoteViewModel mNoteViewModel;
+    private int mNoteId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +47,6 @@ public class NotebookListFragment extends Fragment {
         mNoteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable final List<Note> notes) {
-                // Update the cached copy of the words in the adapter.
                 adapter.setNotes(notes);
             }
         });
@@ -59,7 +61,7 @@ public class NotebookListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
                 //startActivity(intent);
             }
         });
@@ -68,7 +70,7 @@ public class NotebookListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Note note = new Note(data.getStringExtra(NotebookDetailFragment.EXTRA_REPLY));
             mNoteViewModel.insert(note);
         } else {
@@ -77,6 +79,17 @@ public class NotebookListFragment extends Fragment {
                     R.string.empty_not_saved,
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    // Диалог удаления записи
+    public void showDialog() {
+        new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                .setMessage(R.string.dialog_delete_one_note)
+                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
+                    mNoteViewModel.deleteNote(mNoteId);
+                    Toast.makeText(getContext(), R.string.toast_delete_note, Toast.LENGTH_SHORT)
+                            .show();
+                }).setNegativeButton(R.string.cancel, null).show();
     }
 
     public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteViewHolder>{
@@ -103,11 +116,8 @@ public class NotebookListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         String strId = noteId.getText().toString();
-                        int intId = Integer.parseInt(strId);
-                        /*Toast toast = Toast.makeText(getContext(),
-                                strId, Toast.LENGTH_SHORT);
-                        toast.show();*/
-                        mNoteViewModel.deleteNote(intId);
+                        mNoteId = Integer.parseInt(strId);
+                        showDialog();
                     }
                 });
             }
