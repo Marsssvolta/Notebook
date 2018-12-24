@@ -1,36 +1,49 @@
 package com.marsssvolta.notebook;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
+
     private NoteViewModel mNoteViewModel;
+    private int mNoteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        NoteListAdapter adapter = new NoteListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+        mNoteViewModel.getAllNotes().observe(this, adapter::setNotes);
 
-        // Добавление фрагмента в FragmentManager
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.mainFragmentContainer);
-
-        // Создание нового фрагмента, если предыдущий не был сохранён
-        if (fragment == null) {
-            fragment = new NotebookListFragment();
-            // Транзакция фрагмента
-            fm.beginTransaction().add(R.id.mainFragmentContainer, fragment).commit();
-        }
+        FloatingActionButton fab = findViewById(R.id.fab_add);
+        fab.setOnClickListener(view -> addNewNote());
     }
 
     @Override
@@ -43,15 +56,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                showDialog();
+                deleteListDialog();
             default:
                 return super.onOptionsItemSelected(item);
 
         }
     }
 
+    // Добавление новой записи
+    public void addNewNote(){
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.NOTE_ID, 0);
+        startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
+    }
+
     // Диалог очистки списка
-    public void showDialog() {
+    public void deleteListDialog() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_delete_all_notes)
                 .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
@@ -59,5 +79,87 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.toast_delete_notes, Toast.LENGTH_SHORT)
                             .show();
                 }).setNegativeButton(R.string.cancel, null).show();
+    }
+
+    // Диалог удаления записи
+    public void deleteNoteDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_delete_one_note)
+                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
+                    mNoteViewModel.deleteNote(mNoteId);
+                    Toast.makeText(this, R.string.toast_delete_note, Toast.LENGTH_SHORT)
+                            .show();
+                }).setNegativeButton(R.string.cancel, null).show();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Note note = new Note(data.getStringExtra(DetailActivity.EXTRA_REPLY));
+            mNoteViewModel.insert(note);
+        } else {
+            Toast.makeText(this, R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteViewHolder>{
+
+        private final LayoutInflater mInflater;
+        private List<Note> mNotes = Collections.emptyList();
+
+        NoteListAdapter(Context context) {
+            mInflater = LayoutInflater.from(context);
+        }
+
+        class NoteViewHolder extends RecyclerView.ViewHolder {
+            private final TextView noteItemView;
+            private final TextView noteId;
+
+            private NoteViewHolder(View itemView) {
+                super(itemView);
+                noteItemView = itemView.findViewById(R.id.textTitle);
+                noteId = itemView.findViewById(R.id.noteId);
+
+                itemView.setOnClickListener(v -> {
+                    String strId = noteId.getText().toString();
+                    mNoteId = Integer.parseInt(strId);
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra(DetailActivity.NOTE_ID, mNoteId);
+                    startActivity(intent);
+                });
+
+                Button button = itemView.findViewById(R.id.action_button);
+                button.setOnClickListener(v -> {
+                    String strId = noteId.getText().toString();
+                    mNoteId = Integer.parseInt(strId);
+                    deleteNoteDialog();
+                });
+            }
+        }
+
+        @NonNull
+        @Override
+        public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = mInflater.inflate(R.layout.item_card, parent, false);
+            return new NoteViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
+            Note current = mNotes.get(position);
+            holder.noteItemView.setText(current.getNote());
+            holder.noteId.setText(current.getTextId());
+        }
+
+        void setNotes(List<Note> notes) {
+            mNotes = notes;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemCount() {
+            return mNotes.size();
+        }
     }
 }

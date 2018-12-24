@@ -10,11 +10,13 @@ public class NoteRepository {
 
     private NoteDao mNoteDao;
     private LiveData<List<Note>> mAllNotes;
+    private LiveData<Note> mNote;
 
     NoteRepository(Application application) {
         NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
         mNoteDao = db.noteDao();
         mAllNotes = mNoteDao.getNotes();
+        mNote = mNoteDao.getNote();
     }
 
     LiveData<List<Note>> getAllNotes() {
