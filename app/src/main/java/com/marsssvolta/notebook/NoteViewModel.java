@@ -11,6 +11,7 @@ public class NoteViewModel extends AndroidViewModel {
     private NoteRepository mRepository;
 
     private LiveData<List<Note>> mAllNotes;
+    private LiveData<Note> mNote;
 
     public NoteViewModel(Application application) {
         super(application);
@@ -18,12 +19,18 @@ public class NoteViewModel extends AndroidViewModel {
         mAllNotes = mRepository.getAllNotes();
     }
 
+    public NoteViewModel(Application application, int id) {
+        super(application);
+        mRepository = new NoteRepository(application, id);
+        mNote = mRepository.getNote();
+    }
+
     LiveData<List<Note>> getAllNotes() {
         return mAllNotes;
     }
 
-    Note getNote(int id){
-        return Note;
+    LiveData<Note> getNote(){
+        return mNote;
     }
 
     void insert(Note note) {

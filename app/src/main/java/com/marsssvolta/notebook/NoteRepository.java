@@ -16,11 +16,20 @@ public class NoteRepository {
         NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
         mNoteDao = db.noteDao();
         mAllNotes = mNoteDao.getNotes();
-        mNote = mNoteDao.getNote();
+    }
+
+    NoteRepository(Application application, int id) {
+        NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
+        mNoteDao = db.noteDao();
+        mNote = mNoteDao.getNote(id);
     }
 
     LiveData<List<Note>> getAllNotes() {
         return mAllNotes;
+    }
+
+    LiveData<Note> getNote() {
+        return mNote;
     }
 
     void insert(Note note) {

@@ -1,13 +1,16 @@
 package com.marsssvolta.notebook;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import java.util.Objects;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -28,8 +31,6 @@ public class DetailActivity extends AppCompatActivity {
         mButton = findViewById(R.id.button_save);
         mButton.setOnClickListener(view -> saveNewNote());
 
-        mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
-
         mNoteId = (int) getIntent().getExtras().get(NOTE_ID);
         if(mNoteId != 0){
             init();
@@ -37,7 +38,14 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void init(){
-        Note note = mNoteViewModel.getNote(mNoteId);
+        mNoteViewModel = ViewModelProviders.of(this,
+                new ModelFactory(this.getApplication(), mNoteId)).get(NoteViewModel.class);
+        mNoteViewModel.getNote().observe(this, new Observer<Note>() {
+            @Override
+            public void onChanged(@Nullable Note note) {
+                mEditNoteView.setText(Objects.requireNonNull(note).getNote());
+            }
+        });
     }
 
     public void saveNewNote(){
