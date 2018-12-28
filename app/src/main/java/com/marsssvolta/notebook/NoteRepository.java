@@ -88,4 +88,27 @@ public class NoteRepository {
             return null;
         }
     }
+
+    void updateNote(String upNote, int id){
+        new updateNoteAsyncTask(mNoteDao, upNote, id).execute();
+    }
+
+    private static class updateNoteAsyncTask extends AsyncTask<updateNoteAsyncTask, Void, Void> {
+
+        private NoteDao mAsyncTaskDao;
+        private String mUpNote;
+        private int mNoteId;
+
+        updateNoteAsyncTask(NoteDao dao, String upNote, int id) {
+            mAsyncTaskDao = dao;
+            mUpNote = upNote;
+            mNoteId = id;
+        }
+
+        @Override
+        protected Void doInBackground(updateNoteAsyncTask... params) {
+            mAsyncTaskDao.updateNote(mUpNote, mNoteId);
+            return null;
+        }
+    }
 }

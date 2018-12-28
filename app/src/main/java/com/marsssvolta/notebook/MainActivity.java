@@ -3,6 +3,7 @@ package com.marsssvolta.notebook;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,7 +51,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = findViewById(R.id.fab_add);
-        fab.setOnClickListener(view -> addNewNote());
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewNote();
+            }
+        });
     }
 
     @Override
@@ -81,10 +87,12 @@ public class MainActivity extends AppCompatActivity {
     public void deleteListDialog() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_delete_all_notes)
-                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
-                    mNoteViewModel.deleteAll();
-                    Toast.makeText(this, R.string.toast_delete_notes, Toast.LENGTH_SHORT)
-                            .show();
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mNoteViewModel.deleteAll();
+                        Toast.makeText(MainActivity.this, R.string.toast_delete_notes, Toast.LENGTH_SHORT).show();
+                    }
                 }).setNegativeButton(R.string.cancel, null).show();
     }
 
@@ -92,10 +100,12 @@ public class MainActivity extends AppCompatActivity {
     public void deleteNoteDialog() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_delete_one_note)
-                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
-                    mNoteViewModel.deleteNote(mNoteId);
-                    Toast.makeText(this, R.string.toast_delete_note, Toast.LENGTH_SHORT)
-                            .show();
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mNoteViewModel.deleteNote(mNoteId);
+                        Toast.makeText(MainActivity.this, R.string.toast_delete_note, Toast.LENGTH_SHORT).show();
+                    }
                 }).setNegativeButton(R.string.cancel, null).show();
     }
 
@@ -137,10 +147,13 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 Button button = itemView.findViewById(R.id.action_button);
-                button.setOnClickListener(v -> {
-                    String strId = noteId.getText().toString();
-                    mNoteId = Integer.parseInt(strId);
-                    deleteNoteDialog();
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String strId = noteId.getText().toString();
+                        mNoteId = Integer.parseInt(strId);
+                        deleteNoteDialog();
+                    }
                 });
             }
         }

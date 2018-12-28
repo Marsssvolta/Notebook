@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -19,7 +21,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private NoteViewModel mNoteViewModel;
     private EditText mEditNoteView;
-    private Button mButton;
     private int mNoteId;
 
     @Override
@@ -28,15 +29,29 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         mEditNoteView = findViewById(R.id.edit_note);
-        mButton = findViewById(R.id.button_save);
-        mButton.setOnClickListener(view -> saveNewNote());
+        Button button = findViewById(R.id.button_save);
 
-        mNoteId = (int) getIntent().getExtras().get(NOTE_ID);
+        // Получение id через интент
+        mNoteId = (int) Objects.requireNonNull(getIntent().getExtras()).get(NOTE_ID);
+        // Установка значений, если id не равен нулю
         if(mNoteId != 0){
             init();
         }
+
+        // Кнопка сохранения/обновления записи
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mNoteId == 0) {
+                    saveNewNote();
+                } else {
+                    updateNote();
+                }
+            }
+        });
     }
 
+    // Установка значений
     public void init(){
         mNoteViewModel = ViewModelProviders.of(this,
                 new ModelFactory(this.getApplication(), mNoteId)).get(NoteViewModel.class);
@@ -48,6 +63,7 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    // Сохранение записи
     public void saveNewNote(){
         Intent replyIntent = new Intent();
         if (TextUtils.isEmpty(mEditNoteView.getText())) {
@@ -58,5 +74,17 @@ public class DetailActivity extends AppCompatActivity {
             this.setResult(RESULT_OK, replyIntent);
         }
         this.finish();
+    }
+
+    // Обновление записи
+    public void updateNote(){
+        if (TextUtils.isEmpty(mEditNoteView.getText())) {
+            Toast.makeText(this, R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+        } else {
+            String upNote = mEditNoteView.getText().toString();
+            mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+            mNoteViewModel.updateNote(upNote, mNoteId);
+            this.finish();
+        }
     }
 }
