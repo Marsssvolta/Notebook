@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
 
     private NoteViewModel mNoteViewModel;
-    private int mNoteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+        // Установка списка
         mNoteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Кнопка добавления записи
         FloatingActionButton fab = findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,20 +92,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mNoteViewModel.deleteAll();
-                        Toast.makeText(MainActivity.this, R.string.toast_delete_notes, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.toast_delete_notes,
+                                Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton(R.string.cancel, null).show();
     }
 
     // Диалог удаления записи
-    public void deleteNoteDialog() {
+    public void deleteNoteDialog(int id) {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_delete_one_note)
                 .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        mNoteViewModel.deleteNote(mNoteId);
-                        Toast.makeText(MainActivity.this, R.string.toast_delete_note, Toast.LENGTH_SHORT).show();
+                        mNoteViewModel.deleteNote(id);
+                        Toast.makeText(MainActivity.this, R.string.toast_delete_note,
+                                Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton(R.string.cancel, null).show();
     }
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Сохранение данных, если запись не пустая
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Note note = new Note(data.getStringExtra(DetailActivity.EXTRA_REPLY));
             mNoteViewModel.insert(note);
@@ -131,30 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
         class NoteViewHolder extends RecyclerView.ViewHolder {
             private final TextView noteItemView;
-            private final TextView noteId;
+            private final Button deleteButton;
 
             private NoteViewHolder(View itemView) {
                 super(itemView);
-                noteItemView = itemView.findViewById(R.id.textTitle);
-                noteId = itemView.findViewById(R.id.noteId);
-
-                itemView.setOnClickListener(v -> {
-                    String strId = noteId.getText().toString();
-                    mNoteId = Integer.parseInt(strId);
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    intent.putExtra(DetailActivity.NOTE_ID, mNoteId);
-                    startActivity(intent);
-                });
-
-                Button button = itemView.findViewById(R.id.action_button);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String strId = noteId.getText().toString();
-                        mNoteId = Integer.parseInt(strId);
-                        deleteNoteDialog();
-                    }
-                });
+                noteItemView = itemView.findViewById(R.id.text_title);
+                deleteButton = itemView.findViewById(R.id.delete_button);
             }
         }
 
@@ -168,8 +154,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
             Note current = mNotes.get(position);
+            int noteId = current.getId();
             holder.noteItemView.setText(current.getNote());
-            holder.noteId.setText(current.getTextId());
+
+            holder.noteItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra(DetailActivity.NOTE_ID, noteId);
+                    startActivity(intent);
+                }
+            });
+
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        deleteNoteDialog(noteId);
+                }
+            });
         }
 
         void setNotes(List<Note> notes) {

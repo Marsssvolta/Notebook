@@ -11,11 +11,6 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    public String getTextId() {
-        String textId = String.valueOf(id);
-        return textId;
-    }
-
     public int getId() {
         return id;
     }
@@ -28,12 +23,12 @@ public class Note {
     @ColumnInfo(name = "note")
     private String mNote;
 
-    public Note(@NonNull String note) {
+    Note(@NonNull String note) {
         this.mNote = note;
     }
 
     @NonNull
-    public String getNote() {
+    String getNote() {
         return this.mNote;
     }
 }
