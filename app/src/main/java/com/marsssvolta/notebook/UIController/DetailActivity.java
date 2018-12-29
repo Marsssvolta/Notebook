@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook;
+package com.marsssvolta.notebook.UIController;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.marsssvolta.notebook.Model.ModelFactory;
+import com.marsssvolta.notebook.Model.Note;
+import com.marsssvolta.notebook.Model.NoteViewModel;
+import com.marsssvolta.notebook.R;
 
 import java.util.Objects;
 

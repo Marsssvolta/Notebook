@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook;
+package com.marsssvolta.notebook.Model;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -25,27 +25,31 @@ public class NoteViewModel extends AndroidViewModel {
         mNote = mRepository.getNote();
     }
 
-    LiveData<List<Note>> getAllNotes() {
+    public LiveData<List<Note>> getAllNotes() {
         return mAllNotes;
     }
 
-    LiveData<Note> getNote(){
+    public LiveData<Note> getNote(){
         return mNote;
     }
 
-    void insert(Note note) {
+    public void insert(Note note) {
         mRepository.insert(note);
     }
 
-    void deleteAll() {
+    public NoteRepository getRepository() {
+        return mRepository;
+    }
+
+    public void deleteAll() {
         mRepository.deleteAll();
     }
 
-    void deleteNote(int id) {
+    public void deleteNote(int id) {
         mRepository.deleteNote(id);
     }
 
-    void updateNote(String upNote, int id){
+    public void updateNote(String upNote, int id){
         mRepository.updateNote(upNote, id);
     }
 }

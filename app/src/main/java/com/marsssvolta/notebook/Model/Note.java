@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook;
+package com.marsssvolta.notebook.Model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -23,12 +23,12 @@ public class Note {
     @ColumnInfo(name = "note")
     private String mNote;
 
-    Note(@NonNull String note) {
+    public Note(@NonNull String note) {
         this.mNote = note;
     }
 
     @NonNull
-    String getNote() {
+    public String getNote() {
         return this.mNote;
     }
 }

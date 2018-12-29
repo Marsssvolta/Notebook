@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook;
+package com.marsssvolta.notebook.Model;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
