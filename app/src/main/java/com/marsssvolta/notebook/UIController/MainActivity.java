@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.marsssvolta.notebook.Model.Note;
 import com.marsssvolta.notebook.Model.NoteViewModel;
@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mNoteViewModel.deleteAll();
-                        Toast.makeText(MainActivity.this, R.string.toast_delete_notes,
-                                Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
+                                R.string.toast_delete_notes, Snackbar.LENGTH_LONG).show();
                     }
                 }).setNegativeButton(R.string.cancel, null).show();
     }
@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mNoteViewModel.deleteNote(id);
-                        Toast.makeText(MainActivity.this, R.string.toast_delete_note,
-                                Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
+                                R.string.toast_delete_note, Snackbar.LENGTH_LONG).show();
                     }
                 }).setNegativeButton(R.string.cancel, null).show();
     }
@@ -124,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
             Note note = new Note(data.getStringExtra(DetailActivity.EXTRA_REPLY));
             mNoteViewModel.insert(note);
         } else {
-            Toast.makeText(this, R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.mainCoordinatorLayout), R.string.empty_not_saved,
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -138,12 +139,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         class NoteViewHolder extends RecyclerView.ViewHolder {
-            private final TextView noteItemView;
+            private final TextView noteTitle;
+            private final TextView noteText;
             private final Button deleteButton;
 
             private NoteViewHolder(View itemView) {
                 super(itemView);
-                noteItemView = itemView.findViewById(R.id.text_title);
+                noteTitle = itemView.findViewById(R.id.text_title);
+                noteText = itemView.findViewById(R.id.text_main);
                 deleteButton = itemView.findViewById(R.id.delete_button);
             }
         }
@@ -159,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
             Note current = mNotes.get(position);
             int noteId = current.getId();
-            holder.noteItemView.setText(current.getNote());
+            holder.noteTitle.setText(current.getNote());
 
-            holder.noteItemView.setOnClickListener(new View.OnClickListener() {
+            holder.noteTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);

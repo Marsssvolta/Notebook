@@ -4,13 +4,13 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.marsssvolta.notebook.Model.ModelFactory;
 import com.marsssvolta.notebook.Model.Note;
@@ -84,7 +84,8 @@ public class DetailActivity extends AppCompatActivity {
     // Обновление записи
     public void updateNote(){
         if (TextUtils.isEmpty(mEditNoteView.getText())) {
-            Toast.makeText(this, R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.detailLinearLayout), R.string.empty_not_saved,
+                    Snackbar.LENGTH_LONG).show();
         } else {
             String upNote = mEditNoteView.getText().toString();
             mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
