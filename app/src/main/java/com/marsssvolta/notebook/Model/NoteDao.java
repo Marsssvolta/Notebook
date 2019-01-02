@@ -25,6 +25,6 @@ public interface NoteDao {
     @Query("SELECT * FROM note_table WHERE id =:noteId")
     LiveData<Note> getNote(int noteId);
 
-    @Query("UPDATE note_table SET note = :upNote WHERE id =:noteId")
-    void updateNote(String upNote, int noteId);
+    @Query("UPDATE note_table SET title = :upTitle, note = :upNote WHERE id =:noteId")
+    void updateNote(String upTitle, String upNote, int noteId);
 }

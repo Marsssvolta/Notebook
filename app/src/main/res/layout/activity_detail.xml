@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/detailLinearLayout"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.marsssvolta.notebook.UIController.DetailActivity">
+
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_title"
+        android:inputType="textAutoComplete"
+        android:padding="@dimen/small_padding"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/edit_note"
@@ -14,7 +26,7 @@
         android:layout_marginBottom="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
         android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_new_note"
+        android:hint="@string/hint_text"
         android:inputType="textAutoComplete"
         android:padding="@dimen/small_padding"
         android:textSize="18sp" />

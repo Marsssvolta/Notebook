@@ -11,6 +11,19 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @NonNull
+    @ColumnInfo(name = "title")
+    private String mTitle;
+
+    @NonNull
+    @ColumnInfo(name = "note")
+    private String mNote;
+
+    public Note(@NonNull String title, @NonNull String note) {
+        this.mNote = note;
+        this.mTitle = title;
+    }
+
     public int getId() {
         return id;
     }
@@ -20,15 +33,12 @@ public class Note {
     }
 
     @NonNull
-    @ColumnInfo(name = "note")
-    private String mNote;
-
-    public Note(@NonNull String note) {
-        this.mNote = note;
+    public String getNote() {
+        return this.mNote;
     }
 
     @NonNull
-    public String getNote() {
-        return this.mNote;
+    public String getTitle() {
+        return this.mTitle;
     }
 }

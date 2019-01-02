@@ -21,11 +21,13 @@ import java.util.Objects;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.marsssvolta.notebook.reply";
+    public static final String EXTRA_TITLE = "com.marsssvolta.notebook.title";
+    public static final String EXTRA_NOTE = "com.marsssvolta.notebook.note";
     public static final String NOTE_ID = "com.marsssvolta.notebook.noteId";
 
     private NoteViewModel mNoteViewModel;
-    private EditText mEditNoteView;
+    private EditText mEditTitle;
+    private EditText mEditNote;
     private int mNoteId;
 
     @Override
@@ -33,7 +35,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        mEditNoteView = findViewById(R.id.edit_note);
+        mEditTitle = findViewById(R.id.edit_title);
+        mEditNote = findViewById(R.id.edit_note);
         Button button = findViewById(R.id.button_save);
 
         // Получение id через интент
@@ -63,7 +66,8 @@ public class DetailActivity extends AppCompatActivity {
         mNoteViewModel.getNote().observe(this, new Observer<Note>() {
             @Override
             public void onChanged(@Nullable Note note) {
-                mEditNoteView.setText(Objects.requireNonNull(note).getNote());
+                mEditTitle.setText(Objects.requireNonNull(note).getTitle());
+                mEditNote.setText(Objects.requireNonNull(note).getNote());
             }
         });
     }
@@ -71,11 +75,13 @@ public class DetailActivity extends AppCompatActivity {
     // Сохранение записи
     public void saveNewNote(){
         Intent replyIntent = new Intent();
-        if (TextUtils.isEmpty(mEditNoteView.getText())) {
+        if ((TextUtils.isEmpty(mEditTitle.getText())) & (TextUtils.isEmpty(mEditNote.getText()))) {
             this.setResult(RESULT_CANCELED, replyIntent);
         } else {
-            String note = mEditNoteView.getText().toString();
-            replyIntent.putExtra(EXTRA_REPLY, note);
+            String title = mEditTitle.getText().toString();
+            String note = mEditNote.getText().toString();
+            replyIntent.putExtra(EXTRA_TITLE, title);
+            replyIntent.putExtra(EXTRA_NOTE, note);
             this.setResult(RESULT_OK, replyIntent);
         }
         this.finish();
@@ -83,13 +89,14 @@ public class DetailActivity extends AppCompatActivity {
 
     // Обновление записи
     public void updateNote(){
-        if (TextUtils.isEmpty(mEditNoteView.getText())) {
+        if ((TextUtils.isEmpty(mEditTitle.getText())) & (TextUtils.isEmpty(mEditNote.getText()))) {
             Snackbar.make(findViewById(R.id.detailLinearLayout), R.string.empty_not_saved,
                     Snackbar.LENGTH_LONG).show();
         } else {
-            String upNote = mEditNoteView.getText().toString();
+            String upTitle = mEditTitle.getText().toString();
+            String upNote = mEditNote.getText().toString();
             mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
-            mNoteViewModel.updateNote(upNote, mNoteId);
+            mNoteViewModel.updateNote(upTitle, upNote, mNoteId);
             this.finish();
         }
     }

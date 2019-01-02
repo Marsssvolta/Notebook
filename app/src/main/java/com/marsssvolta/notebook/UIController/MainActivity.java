@@ -26,6 +26,7 @@ import com.marsssvolta.notebook.Model.Note;
 import com.marsssvolta.notebook.Model.NoteViewModel;
 import com.marsssvolta.notebook.R;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
 
     private NoteViewModel mNoteViewModel;
+
+    String title;
+    String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +125,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Сохранение данных, если запись не пустая
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Note note = new Note(data.getStringExtra(DetailActivity.EXTRA_REPLY));
+            /*title = data.getStringExtra(DetailActivity.EXTRA_TITLE);
+            text = data.getStringExtra(DetailActivity.EXTRA_NOTE);*/
+            Note note = new Note(data.getStringExtra(DetailActivity.EXTRA_TITLE),
+                    data.getStringExtra(DetailActivity.EXTRA_NOTE));
+            /*Note note = new Note(title,
+                    text);*/
             mNoteViewModel.insert(note);
+            /*Snackbar.make(findViewById(R.id.mainCoordinatorLayout), title + text,
+                    Snackbar.LENGTH_LONG).show();*/
         } else {
             Snackbar.make(findViewById(R.id.mainCoordinatorLayout), R.string.empty_not_saved,
                     Snackbar.LENGTH_LONG).show();
@@ -146,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             private NoteViewHolder(View itemView) {
                 super(itemView);
                 noteTitle = itemView.findViewById(R.id.text_title);
-                noteText = itemView.findViewById(R.id.text_main);
+                noteText = itemView.findViewById(R.id.text_note);
                 deleteButton = itemView.findViewById(R.id.delete_button);
             }
         }
@@ -162,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
             Note current = mNotes.get(position);
             int noteId = current.getId();
-            holder.noteTitle.setText(current.getNote());
+            holder.noteTitle.setText(current.getTitle());
+            holder.noteText.setText(current.getNote());
 
             holder.noteTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
