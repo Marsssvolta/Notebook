@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         private final LayoutInflater mInflater;
         private List<Note> mNotes = Collections.emptyList();
+        private View itemView;
 
         NoteListAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
@@ -142,22 +143,18 @@ public class MainActivity extends AppCompatActivity {
         class NoteViewHolder extends RecyclerView.ViewHolder {
             private final TextView noteTitle;
             private final TextView noteText;
-            /*private final Button deleteButton;
-            private final Button editButton;*/
 
             private NoteViewHolder(View itemView) {
                 super(itemView);
                 noteTitle = itemView.findViewById(R.id.text_title);
                 noteText = itemView.findViewById(R.id.text_note);
-                /*deleteButton = itemView.findViewById(R.id.delete_button);
-                editButton = itemView.findViewById(R.id.edit_button);*/
             }
         }
 
         @NonNull
         @Override
         public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = mInflater.inflate(R.layout.item_card, parent, false);
+            itemView = mInflater.inflate(R.layout.item_card, parent, false);
             return new NoteViewHolder(itemView);
         }
 
@@ -168,28 +165,19 @@ public class MainActivity extends AppCompatActivity {
             holder.noteTitle.setText(current.getTitle());
             holder.noteText.setText(current.getNote());
 
-            /*holder.noteTitle.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                     intent.putExtra(DetailActivity.NOTE_ID, noteId);
                     startActivity(intent);
                 }
-            });*/
+            });
 
             /*holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                         deleteNoteDialog(noteId);
-                }
-            });
-
-            holder.editButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    intent.putExtra(DetailActivity.NOTE_ID, noteId);
-                    startActivity(intent);
                 }
             });*/
         }

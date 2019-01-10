@@ -3,7 +3,6 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    card_view:cardBackgroundColor="@color/colorCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -11,6 +10,7 @@
     android:layout_marginTop="@dimen/md_keylines"
     android:layout_marginRight="@dimen/md_keylines"
     android:layout_marginBottom="@dimen/md_keylines"
+    card_view:cardBackgroundColor="@color/colorCard"
     card_view:cardCornerRadius="@dimen/card_radius"
     card_view:cardElevation="@dimen/card_elevation">
 
@@ -23,44 +23,22 @@
             android:id="@+id/text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorTitle"
-            android:textStyle="normal"
-            android:typeface="serif"
             android:layout_marginStart="@dimen/md_keylines"
             android:layout_marginEnd="@dimen/md_keylines"
-            android:textSize="@dimen/title_text_size" />
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/title_text_size"
+            android:textStyle="normal"
+            android:typeface="serif" />
 
         <TextView
             android:id="@+id/text_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:typeface="normal"
             android:layout_marginStart="@dimen/md_keylines"
             android:layout_marginEnd="@dimen/md_keylines"
-            android:textSize="@dimen/main_text_size" />
+            android:textSize="@dimen/main_text_size"
+            android:textStyle="italic"
+            android:typeface="normal" />
 
-        <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/delete_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/delete_note"
-                android:textColor="?attr/colorPrimary" />
-
-            <Button
-                android:id="@+id/edit_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_note"
-                android:textColor="?attr/colorPrimary" />
-
-        </LinearLayout>-->
     </LinearLayout>
 </android.support.v7.widget.CardView>
