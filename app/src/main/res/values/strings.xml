@@ -12,5 +12,4 @@
     <string name="toast_delete_notes">Список удалён.</string>
     <string name="toast_delete_note">Запись удалена.</string>
     <string name="delete_note">УДАЛИТЬ</string>
-    <string name="edit_note">РЕДАКТИРОВАТЬ</string>
 </resources>

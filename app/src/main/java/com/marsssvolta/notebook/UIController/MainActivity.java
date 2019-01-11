@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.marsssvolta.notebook.Model.Note;
@@ -143,11 +143,13 @@ public class MainActivity extends AppCompatActivity {
         class NoteViewHolder extends RecyclerView.ViewHolder {
             private final TextView noteTitle;
             private final TextView noteText;
+            private final ImageButton deleteButton;
 
             private NoteViewHolder(View itemView) {
                 super(itemView);
                 noteTitle = itemView.findViewById(R.id.text_title);
                 noteText = itemView.findViewById(R.id.text_note);
+                deleteButton = itemView.findViewById(R.id.delete_button);
             }
         }
 
@@ -174,12 +176,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            /*holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        deleteNoteDialog(noteId);
+                    deleteNoteDialog(noteId);
                 }
-            });*/
+            });
         }
 
         void setNotes(List<Note> notes) {
