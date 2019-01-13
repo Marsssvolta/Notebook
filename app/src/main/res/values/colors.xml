@@ -6,4 +6,5 @@
     <color name="colorTitle">#000000</color>
     <color name="colorCard">#f2e1c8</color>
     <color name="colorListBackground">#b2844a</color>
+    <color name="colorButtonSave">#ffffff</color>
 </resources>

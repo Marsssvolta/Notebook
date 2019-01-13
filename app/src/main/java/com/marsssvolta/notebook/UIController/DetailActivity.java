@@ -90,7 +90,7 @@ public class DetailActivity extends AppCompatActivity {
     // Обновление записи
     public void updateNote(){
         if ((TextUtils.isEmpty(mEditTitle.getText())) & (TextUtils.isEmpty(mEditNote.getText()))) {
-            Snackbar.make(findViewById(R.id.detailLinearLayout), R.string.empty_not_saved,
+            Snackbar.make(findViewById(R.id.detailCoordinatorLayout), R.string.empty_not_saved,
                     Snackbar.LENGTH_LONG).show();
         } else {
             String upTitle = mEditTitle.getText().toString();

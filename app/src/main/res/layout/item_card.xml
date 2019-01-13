@@ -12,7 +12,7 @@
     android:layout_marginRight="@dimen/big_padding"
     android:layout_marginTop="@dimen/big_padding"
     card_view:cardBackgroundColor="@color/colorCard"
-    card_view:cardCornerRadius="@dimen/small_padding"
+    card_view:cardCornerRadius="@dimen/radius"
     card_view:cardElevation="@dimen/card_elevation">
 
     <RelativeLayout

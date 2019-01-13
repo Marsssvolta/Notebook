@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UIController.DetailActivity"></activity>
+        <activity
+            android:name=".UIController.DetailActivity"
+            android:parentActivityName=".UIController.MainActivity">
+        </activity>
     </application>
 
 </manifest>
