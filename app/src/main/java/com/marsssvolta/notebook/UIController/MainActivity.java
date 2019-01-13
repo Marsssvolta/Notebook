@@ -1,12 +1,9 @@
 package com.marsssvolta.notebook.UIController;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -47,21 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
         // Установка списка
-        mNoteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(@Nullable List<Note> notes) {
-                adapter.setNotes(notes);
-            }
-        });
+        mNoteViewModel.getAllNotes().observe(this, adapter::setNotes);
 
         // Кнопка добавления записи
         FloatingActionButton fab = findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNewNote();
-            }
-        });
+        fab.setOnClickListener(view -> addNewNote());
     }
 
     @Override
@@ -92,13 +79,10 @@ public class MainActivity extends AppCompatActivity {
     public void deleteListDialog() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_delete_all_notes)
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        mNoteViewModel.deleteAll();
-                        Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
-                                R.string.toast_delete_notes, Snackbar.LENGTH_LONG).show();
-                    }
+                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
+                    mNoteViewModel.deleteAll();
+                    Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
+                            R.string.toast_delete_notes, Snackbar.LENGTH_LONG).show();
                 }).setNegativeButton(R.string.cancel, null).show();
     }
 
@@ -106,13 +90,10 @@ public class MainActivity extends AppCompatActivity {
     public void deleteNoteDialog(int id) {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_delete_one_note)
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        mNoteViewModel.deleteNote(id);
-                        Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
-                                R.string.toast_delete_note, Snackbar.LENGTH_LONG).show();
-                    }
+                .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
+                    mNoteViewModel.deleteNote(id);
+                    Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
+                            R.string.toast_delete_note, Snackbar.LENGTH_LONG).show();
                 }).setNegativeButton(R.string.cancel, null).show();
     }
 
@@ -167,21 +148,15 @@ public class MainActivity extends AppCompatActivity {
             holder.noteTitle.setText(current.getTitle());
             holder.noteText.setText(current.getNote());
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    intent.putExtra(DetailActivity.NOTE_ID, noteId);
-                    startActivity(intent);
-                }
+            // Переход к редактированию
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra(DetailActivity.NOTE_ID, noteId);
+                startActivity(intent);
             });
 
-            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteNoteDialog(noteId);
-                }
-            });
+            // Кнопка удаления записи
+            holder.deleteButton.setOnClickListener(v -> deleteNoteDialog(noteId));
         }
 
         void setNotes(List<Note> notes) {

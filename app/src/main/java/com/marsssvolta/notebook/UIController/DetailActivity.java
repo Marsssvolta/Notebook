@@ -1,19 +1,15 @@
 package com.marsssvolta.notebook.UIController;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.marsssvolta.notebook.Model.ModelFactory;
-import com.marsssvolta.notebook.Model.Note;
 import com.marsssvolta.notebook.Model.NoteViewModel;
 import com.marsssvolta.notebook.R;
 
@@ -47,14 +43,11 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         // Кнопка сохранения/обновления записи
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mNoteId == 0) {
-                    saveNewNote();
-                } else {
-                    updateNote();
-                }
+        button.setOnClickListener(view -> {
+            if (mNoteId == 0) {
+                saveNewNote();
+            } else {
+                updateNote();
             }
         });
     }
@@ -63,12 +56,9 @@ public class DetailActivity extends AppCompatActivity {
     public void init(){
         mNoteViewModel = ViewModelProviders.of(this,
                 new ModelFactory(this.getApplication(), mNoteId)).get(NoteViewModel.class);
-        mNoteViewModel.getNote().observe(this, new Observer<Note>() {
-            @Override
-            public void onChanged(@Nullable Note note) {
-                mEditTitle.setText(Objects.requireNonNull(note).getTitle());
-                mEditNote.setText(Objects.requireNonNull(note).getNote());
-            }
+        mNoteViewModel.getNote().observe(this, note -> {
+            mEditTitle.setText(Objects.requireNonNull(note).getTitle());
+            mEditNote.setText(Objects.requireNonNull(note).getNote());
         });
     }
 
