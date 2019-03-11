@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook.UIController;
+package com.marsssvolta.notebook.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.marsssvolta.notebook.Model.ModelFactory;
-import com.marsssvolta.notebook.Model.NoteViewModel;
+import com.marsssvolta.notebook.model.ModelFactory;
+import com.marsssvolta.notebook.model.NoteViewModel;
 import com.marsssvolta.notebook.R;
 
 import java.util.Objects;
@@ -45,9 +45,9 @@ public class DetailActivity extends AppCompatActivity {
         // Кнопка сохранения/обновления записи
         button.setOnClickListener(view -> {
             if (mNoteId == 0) {
-                saveNewNote();
+                DetailActivity.this.saveNewNote();
             } else {
-                updateNote();
+                DetailActivity.this.updateNote();
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook.UIController;
+package com.marsssvolta.notebook.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -19,8 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.marsssvolta.notebook.Model.Note;
-import com.marsssvolta.notebook.Model.NoteViewModel;
+import com.marsssvolta.notebook.model.Note;
+import com.marsssvolta.notebook.model.NoteViewModel;
 import com.marsssvolta.notebook.R;
 
 import java.util.Collections;
@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(R.string.dialog_delete_all_notes)
                 .setPositiveButton(R.string.delete, (dialog, whichButton) -> {
                     mNoteViewModel.deleteAll();
-                    Snackbar.make(findViewById(R.id.mainCoordinatorLayout),
-                            R.string.toast_delete_notes, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(MainActivity.this.findViewById(R.id.mainCoordinatorLayout), R.string.toast_delete_notes, Snackbar.LENGTH_LONG).show();
                 }).setNegativeButton(R.string.cancel, null).show();
     }
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorListBackground"
-    tools:context="com.marsssvolta.notebook.UIController.MainActivity">
+    tools:context="com.marsssvolta.notebook.ui.MainActivity">
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recycler_view"

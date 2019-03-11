@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook.Model;
+package com.marsssvolta.notebook.model;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

@@ -1,4 +1,4 @@
-package com.marsssvolta.notebook.Model;
+package com.marsssvolta.notebook.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
